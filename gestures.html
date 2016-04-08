@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Dispaly Gestures </title>
+  <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+
+  <!-- <script src="js/Three.js"></script> -->
+
+  <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
+  <!-- <script src="http://js.leapmotion.com/leap-plugins-0.1.11.js"></script>
+  <script src="http://js.leapmotion.com/leap-widgets-0.1.0.min.js"></script>
+  <script src="http://js.leapmotion.com/leap.rigged-hand-0.1.7.js"></script> -->
+
+
+  <style>
+  #container {
+
+    width: 280px;
+    height:280px;
+
+
+    margin: 5px auto;
+  }
+
+  #myCanvas {
+    width: 280px;
+    height: 280px;
+
+  }
+
+  </style>
+
+
+</head>
+
+
+<body bgcolor="#E6E6FA">
+
+  <!-- <p>Zone: <span id="zone"</span></p> -->
+
+  <p>Gesture Type: <span id="outputGesture" style="color:green;"></span></p>
+  <p>Circle Center: <span id="outputGestureCentre" style="color:blue;"  ></span></p>
+  <p>Velocity: <span id="outputVelocity" style="color:green;" ></span></p>
+  <p>Hand: <span id="outputHand" style="color:green;"></span></p>
+
+  <div id="container">
+    <canvas id="myCanvas" width="260" height="260" ></canvas>
+  </div>
+  <p>Finger: <span id="outputFinger" style="color:blue;"></span> </p>
+
+  <p>Circle: <span id="outputCircle" style="color:green;"></span> </p>
+
+  <p>Tap:  <span id="outputTap" style="color:green;" ></span></p>
+
+  <p>Swipe: <span id="outputSwipe" style="color:blue;" ></span> </p>
+
+  <p>ScreenTap: <span id="outputScreenTap" style="color:green;"></span></p>
+
+  <p>Zone: <span id="zone"</span></p>
+
+</body>
+
+
+
+<!-- <script>
+  var zoneDisplay = document.getElementById("zone");
+
+  var controller = new Leap.Controller();
+  controller.on('frame', function(frame) {
+    if (frame.pointables.length > 0) {
+      var touchZone = frame.pointables[0].touchZone;
+      zoneDisplay.innerText = touchZone;
+    }
+  });
+  controller.connect();
+</script> -->
+
+
+
+
+
+
+
+<script>
+  var balls = {};
+  var circle = 0;
+  var tap = 0;
+  var swipe = 0;
+  var screenTap = 0;
+
+  Leap.loop(function(frame) {
+
+    frame.hands.forEach(function(hand, index) {
+
+
+
+      var type = hand.type;
+
+      // hand.fingers.forEach(function(finger){
+      //       console.log(finger)//...
+      // });
+      if (type == "left") {
+        outputHand.innerHTML = "Left hand.";
+      } else {
+        outputHand.innerHTML = "Right hand.";
+      }
+
+      var hand = frame.hands[0];
+      var finger = hand.fingers[0];
+    //  outputFinger.innerHTML = finger;
+
+
+      if (frame.valid && frame.gestures.length > 0) {
+        frame.gestures.forEach(function(gesture) {
+
+
+
+          // var crossProduct = Leap.vec3.create();
+          // var direction = hand.direction;
+          // var normal = hand.palmNormal;
+          //
+          // Leap.vec3.cross(crossProduct, direction, normal);
+
+
+
+
+
+          // create image
+          var img = new Image();
+          img.onload = function() {
+            ctx.drawImage(img, 4, 4);
+          }
+
+          var c = document.getElementById("myCanvas");
+          var ctx = c.getContext("2d");
+
+          switch (gesture.type) {
+            case "circle":
+              outputGesture.innerHTML = "Circle Gesture";
+              var circleCenter = gesture.center;
+              outputGestureCentre.innerHTML = circleCenter;
+              circle += 1;
+              outputCircle.innerHTML = circle;
+
+
+              // getting the direction of the circle gesture
+              // using dotProduct
+              var clockwise = false;
+              var pointableID = gesture.pointableIds[0];
+              var direction = frame.pointable(pointableID).direction;
+              var dotProduct = Leap.vec3.dot(direction, gesture.normal);
+
+              if (dotProduct > 0) {
+                clockwise = true;
+                img.src = './images/rightCircle.jpg';
+              } else {
+                img.src = './images/leftCircle.jpg';
+
+              }
+
+              // if circle gesture is complete
+              // using dotProduct to get direction
+              var circleProgress = gesture.progress;
+              var completeCircles = Math.floor(circleProgress);
+              if (circleProgress < 1 && dotProduct < 0) {
+                img.src = './images/leftCircle.png'
+              } else if (circleProgress == 1) {
+                img.src = './images/rightCircle.png'
+              }
+
+              // use speech synthesizer for the craic
+              if (circle == 1000) {
+                document.body.style.backgroundColor = "#ffffff";
+                var msg = new SpeechSynthesisUtterance('Circle Gesture reached 1000');
+                var voices = window.speechSynthesis.getVoices();
+                msg.voice = voices[2];
+                msg.text = "Circle gesture has reached 100";
+                window.speechSynthesis.speak(msg);
+              }
+              //console.log("Circle Gesture");
+              break;
+            case "keyTap":
+              outputGesture.innerHTML = "Tap gesture";
+              tap += 1;
+              outputTap.innerHTML = tap;
+              img.src = './images/down.jpg';
+              //console.log("Key Tap Gesture");
+              break;
+            case "screenTap":
+              outputGesture.innerHTML = "Screen Tap gesture";
+              screenTap += 1;
+              outputScreenTap.innerHTML = screenTap;
+              img.src = './images/screenTap.png';
+              //console.log("Screen Tap Gesture");
+              break;
+            case "swipe":
+              var speed = hand.palmVelocity;
+
+              var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+              //Classify as right-left or up-down
+              if (isHorizontal) {
+                if (gesture.direction[0] > 0) {
+                  swipeDirection = "Right";
+                  img.src = './images/right.jpg';
+
+                } else {
+                  swipeDirection = "Left";
+                  img.src = './images/left.jpg';
+
+                }
+              } else { //vertical
+                if (gesture.direction[1] > 0) {
+                  swipeDirection = "Up";
+                  img.src = './images/up.jpg';
+
+                } else {
+                  swipeDirection = "Down";
+                  img.src = './images/down.jpg';
+                }
+
+              }
+
+              outputGesture.innerHTML = swipeDirection;
+              // var velocity = gesture.speed;
+              // console.log(velocity)
+              swipe += 1;
+              outputSwipe.innerHTML = swipe;
+              outputVelocity.innerHTML = speed;
+              //img.src = './images/gestureFlick.jpg';
+              //console.log("Swipe Gesture");
+              break;
+
+          }
+        })
+      }
+    });
+
+  }).use('screenPosition', {
+    scale: 0.24
+  });
+</script>
+
+
+</html>
