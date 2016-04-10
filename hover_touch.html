@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Hover Touch</title>
+  <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
+
+</head>
+
+<body>
+
+
+  <p>Where its at:  <span id="zone" </span></p>
+  <div>
+    <canvas id="myCanvas" width="600" height="600" style="float:center"></canvas>
+  </div>
+</body>
+
+<script>
+  var testColor
+  var zoneDisplay = document.getElementById("zone");
+  var canvas = document.getElementById('myCanvas');
+
+  var controller = new Leap.Controller();
+  controller.on('frame', function(frame) {
+    if (frame.pointables.length > 0) {
+      var touchZone = frame.pointables[0].touchZone;
+      console.log(touchZone)
+      zoneDisplay.innerText = touchZone;
+
+
+      switch (touchZone) {
+        case "none":
+          testColor = "blue";
+          break;
+        case "hovering":
+          testColor = "green";
+          break;
+        case "touching":
+          testColor = "red";
+          break;
+      }
+      draw();
+
+    }
+  });
+
+  function draw() {
+
+    var context = canvas.getContext('2d');
+    var centerX = canvas.width / 2;
+    var centerY = canvas.height / 2;
+    var radius = 200;
+    context.beginPath();
+    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+    context.fillStyle = testColor;
+    context.fill();
+    context.lineWidth = 5;
+    context.strokeStyle = '#003300';
+    context.stroke();
+    requestAnimationFrame(draw);
+
+
+
+  }
+
+  controller.connect();
+</script>
+
+</html>

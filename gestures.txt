@@ -1,0 +1,19 @@
+##G00305555
+##Gesture UI Project
+
+
+##Purpose of the application
+
+This project has been created to investigate the potential for use and identify the gestures available.
+
+##Gestures identified for application
+
+
+
+##Hardware used for application
+The gesture are identified using a Leap Motion Controller.This controller
+
+
+##Architecture
+
+I have looked into Leapjs which used with other JavaScript libraries such as Threejs and a browser.
