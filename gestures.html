@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Dispaly Gestures </title>
-  <script src='https://code.responsivevoice.org/responsivevoice.js'></script>
+  <!-- <script src='https://code.responsivevoice.org/responsivevoice.js'></script> -->
 
   <script src="js/Three.js"></script>
 
@@ -14,43 +14,26 @@
   <script src="http://js.leapmotion.com/leap.rigged-hand-0.1.7.js"></script> -->
 
 
-  <!-- /*<style>
-  #container {
-
-    width: 280px;
-    height:280px;
-
-
-    margin: 5px auto;
-  }
-
-  #myCanvas {
-    width: 280px;
-    height: 280px;
-
-  }
-
-  </style>*/ -->
-
-
 </head>
 
 
 <body bgcolor="#E6E6FA">
 
 
-  <p>Gesture Type: <span id="outputGesture" style="color:green;"></span></p>
+   <p>Type: <span id="outputGesture" style="color:green;"></span></p>
   <p>Circle Center: <span id="outputGestureCentre" style="color:blue;"></span></p>
   <p>Velocity: <span id="outputVelocity" style="color:green;"></span></p>
   <p>Hand: <span id="outputHand" style="color:green;"></span></p>
+
   <div id="container">
-    <canvas id="myCanvas" width="900" height="100"></canvas>
+    <canvas id="myCanvas" width="600" height="80" align="center"></canvas>
+
   </div>
-  <p>Finger: <span id="outputFinger" style="color:blue;"></span> </p>
+  <!-- <p>Finger: <span id="outputFinger" style="color:blue;"></span> </p> -->
   <p>Circle: <span id="outputCircle" style="color:green;"></span> </p>
   <p>Tap: <span id="outputTap" style="color:green;"></span></p>
   <p>Swipe: <span id="outputSwipe" style="color:blue;"></span> </p>
-  <p>ScreenTap: <span id="outputScreenTap" style="color:green;"></span></p>
+   <p>ScreenTap: <span id="outputScreenTap" style="color:green;"></span></p>
 </body>
 
 <script>
@@ -89,18 +72,24 @@
 
           var c = document.getElementById("myCanvas");
           var ctx = c.getContext("2d");
-          ctx.font = "60px Arial";
 
+          var gradient = ctx.createLinearGradient(0, 0, c.width, 0);
+          gradient.addColorStop("0", "cyan");
+          gradient.addColorStop("0.5", "blue");
+          gradient.addColorStop("1.0", "green");
+
+          ctx.fillStyle = gradient;
+          ctx.font = "60px Arial"
 
 
           switch (gesture.type) {
             case "circle":
-              outputGesture.innerHTML = "Circle Gesture";
+              outputGesture.innerHTML = "Circle ";
               var circleCenter = gesture.center;
               outputGestureCentre.innerHTML = circleCenter;
               circle += 1;
               outputCircle.innerHTML = circle;
-              ctx.fillText("Circle", 10, 50);
+              ctx.fillText("Circle", 200, 100);
 
               // getting the direction of the circle gesture
               // using dotProduct
@@ -159,17 +148,17 @@
 
 
 
-              outputGesture.innerHTML = "Key Tap gesture";
+              outputGesture.innerHTML = "Key Tap";
               tap += 1;
               outputTap.innerHTML = tap;
 
               ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
-              ctx.fillText("Key Tap Gesture", 10, 50);
+              ctx.fillText("Key Tap", 10, 50);
               //  img.src = './images/down.jpg';
               //console.log("Key Tap Gesture");
               break;
             case "screenTap":
-              outputGesture.innerHTML = "Screen Tap Gesture";
+              outputGesture.innerHTML = "Screen Tap";
               screenTap += 1;
               outputScreenTap.innerHTML = screenTap;
               ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);

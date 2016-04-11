@@ -4,9 +4,36 @@
 
 ##Purpose of the application
 
-This project has been created to investigate the potential for use and identify the gestures available.
+This project has been created to investigate the potential for use,  and identify the gestures available
+using the leap motion controller. The leap motion controller uses 2 cameras and infrared to track the motions
+of the joints, hands and fingers.
+
 
 ##Gestures identified for application
+
+Display Gestures
+
+Swipe Right
+Swipe Left
+Swipe Up
+Swipe Down
+Key Tap
+Screen Tap
+Circle Right
+Circle Left
+Incomplete circle left
+Incomplete circle right
+
+
+
+Touch Zone Gestures
+
+The range is between [1,-1]
+In this demo i have created a circle canvas to change color as the different zones are interacted with.
+Blue: nothing happening
+Green: hovering effect
+Red: touching.
+
 
 
 
@@ -16,4 +43,6 @@ The gesture are identified using a Leap Motion Controller.This controller
 
 ##Architecture
 
-I have looked into Leapjs which used with other JavaScript libraries such as Threejs and a browser.
+LeapMotion SDK
+
+The  Leapjs which used with other JavaScript libraries such as Threejs and a browser.
