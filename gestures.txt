@@ -4,14 +4,15 @@
 
 ##Purpose of the application
 
-This project has been created to investigate the potential for use,  and identify the gestures available
-using the leap motion controller. The leap motion controller uses 2 cameras and infrared to track the motions
+This project has been created to investigate the potential for use, and identify the gestures available
+using the leap motion controller. The leap motion controller uses 2 cameras and infrared LEDs to track the motions
 of the joints, hands and fingers.
 
 
 ##Gestures identified for application
 
-Display Gestures
+Display Gestures possible fro the JavaScript library.
+The most common gestures using the API are
 
 Swipe Right
 Swipe Left
@@ -26,15 +27,16 @@ Incomplete circle right
 
 
 
-Touch Zone Gestures
-
-The range is between [1,-1]
+Touch Gestures
+Virtual touching is accomplished using a touch zone area.
+The range is between [1,-1]. +1 represents not touching, 0 hovering and -1 touching.
 In this demo i have created a circle canvas to change color as the different zones are interacted with.
+
 Blue: nothing happening
 Green: hovering effect
 Red: touching.
 
-
+This type of gesture simulates button pressing.
 
 
 ##Hardware used for application
@@ -43,6 +45,14 @@ The gesture are identified using a Leap Motion Controller.This controller
 
 ##Architecture
 
-LeapMotion SDK
+##The Leap Motion SDK
+The Leap SDK is cross platform OS X, Windows and Linux.
+Programming languages available are C++, C#, Java, Python, JavaScript and Objective-C.
+For the purpose of this exercise I have chosen to use Leapjs and Threejs. Both can be used
+within the browser to create application for WebGL.
+
+##Environments
+Unity, Unreal Engine and Unity Orion all currently support the Leap.
+
 
 The  Leapjs which used with other JavaScript libraries such as Threejs and a browser.

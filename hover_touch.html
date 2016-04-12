@@ -7,36 +7,32 @@
   <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
 
 
-<!-- /*<style>
-  myCanvas {
-
-    Width: 300px;
-    Margin: 0 auto;
-    Vertical-align: middle;
-
-}
-
-</style>*/ -->
-
 </head>
 
 
 <body bgcolor="#E6E6FA">
 
 
-
-  <p>Where its at:  <span id="zone" </span></p>
+  <p>Where its at: <span id="zone">....</span></span>
+  </p>
+  <p>Distance: <span id="distance">....</span></p>
 
   <div>
-  <canvas id="myCanvas" width="600" height="600"></canvas>
+    <canvas id="myCanvas" width="600" height="600" style="center"></canvas>
 
   </div>
 </body>
 
+
+
 <script>
   var testColor
   var zoneDisplay = document.getElementById("zone");
-  var canvas = document.getElementById('myCanvas');
+  var canvas = document.getElementById("myCanvas")
+
+  var distanceDisplay = document.getElementById("distance");
+
+
 
   var controller = new Leap.Controller();
   controller.on('frame', function(frame) {
@@ -44,6 +40,16 @@
       var touchZone = frame.pointables[0].touchZone;
       console.log(touchZone)
       zoneDisplay.innerText = touchZone;
+
+
+      var dis = frame.pointables[0].touchDistance;
+      distanceDisplay.innerText = dis;
+      //  console.log(dis)
+      var pointable = frame.pointables[0];
+
+      var direction = pointable.direction;
+      console.log(direction)
+      console.log(pointable.toString());
 
 
       switch (touchZone) {
@@ -57,6 +63,7 @@
           testColor = "red";
           break;
       }
+
       draw();
 
     }

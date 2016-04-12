@@ -20,7 +20,7 @@
 <body bgcolor="#E6E6FA">
 
 
-  <p>Type: <span id="outputGesture" style="color:green;"></span></p>
+   <p>Type: <span id="outputGesture" style="color:green;"></span></p>
   <p>Circle Center: <span id="outputGestureCentre" style="color:blue;"></span></p>
   <p>Velocity: <span id="outputVelocity" style="color:green;"></span></p>
   <p>Hand: <span id="outputHand" style="color:green;"></span></p>
@@ -33,7 +33,7 @@
   <p>Circle: <span id="outputCircle" style="color:green;"></span> </p>
   <p>Tap: <span id="outputTap" style="color:green;"></span></p>
   <p>Swipe: <span id="outputSwipe" style="color:blue;"></span> </p>
-  <p>ScreenTap: <span id="outputScreenTap" style="color:green;"></span></p>
+   <p>ScreenTap: <span id="outputScreenTap" style="color:green;"></span></p>
 </body>
 
 <script>
@@ -153,21 +153,10 @@
               ctx.fillText("Screen Tap", 10, 50);
               //    img.src = './images/screenTap.png';
               //console.log("Screen Tap Gesture");
-
-
-              var position = gesture.position;
-              console.log('Pos: ',position)
-
-              var state = gesture.state;
-              console.log('State: ', state)
-
-
               break;
 
             case "swipe":
               var speed = hand.palmVelocity;
-              var state = gesture.state;
-              console.log('State: ', state)
 
               var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
               //Classify as right-left or up-down

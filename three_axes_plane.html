@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Three_Axes</title>
+  <script src="js/Three.js"></script>
+
+  <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
+  <script src="https://js.leapmotion.com/leap-plugins-0.1.11.js"></script>
+  <script src="https://js.leapmotion.com/leap-widgets-0.1.0.js"></script>
+  <script src="js/OrbitControls.js"></script>
+
+  <!-- <script src="https://js.leapmotion.com/leap.rigged-hand-0.1.7.js"></script> -->
+
+
+
+</head>
+
+<body>
+
+</body>
+
+<script>
+
+  Leap.loop({
+      background: true,
+      backGroundColor: new THREE.Color(0xeeeeee)
+    })
+    .use('transform', {
+      vr: 'desktop' // Switch to meters.
+    })
+    .use('boneHand', {
+      targetEl: document.body,
+      //jointColor: new THREE.Color(0xffffff),
+      jointColor: new THREE.Color(0xeeeeee),
+
+      rendererOps: {
+        antialias: true
+      }
+    })
+    .use('proximity');
+
+
+
+
+
+
+
+
+  var scene = Leap.loopController.plugins.boneHand.scene;
+
+  var camera = Leap.loopController.plugins.boneHand.camera;
+  var renderer = Leap.loopController.plugins.boneHand.renderer;
+
+  camera.position.set(0, 0.3, 0.6);
+
+  var controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+  var axisHelper = new THREE.AxisHelper(0.2, 0 ,3);
+
+
+  scene.add(axisHelper);
+
+
+
+
+
+    var planeGeometry = new THREE.PlaneGeometry(0.2, 0.2);
+    var material = new THREE.MeshLambertMaterial({ color: new THREE.Color(0x99CC99),
+      side: THREE.DoubleSide
+    });
+    var planeMesh = new THREE.Mesh(planeGeometry, material);
+    planeMesh.position.setX(0);
+    planeMesh.position.setY(0);
+    planeMesh.name = "planeMesh";
+    scene.add(planeMesh);
+
+    var plane = new InteractablePlane(planeMesh, Leap.loopController);
+
+
+
+
+
+
+    var grid = new THREE.GridHelper(100, .25);
+    grid.setColors( 0x000000,  0x000000 );
+
+    scene.add(grid);
+
+
+
+
+
+
+
+
+</script>
+
+</html>
