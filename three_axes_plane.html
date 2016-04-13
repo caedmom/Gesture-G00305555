@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <title>Three_Axes</title>
-  <script src="js/Three.js"></script>
+  <script src="js/three.js"></script>
 
   <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
   <script src="https://js.leapmotion.com/leap-plugins-0.1.11.js"></script>
@@ -13,19 +13,29 @@
 
   <!-- <script src="https://js.leapmotion.com/leap.rigged-hand-0.1.7.js"></script> -->
 
+  <style>
+    body {
+      margin: 0px;
+      background-color: #A9A9A9;
+      overflow: hidden;
+    }
+  </style>
+
 
 
 </head>
 
 <body>
 
+
+
 </body>
 
 <script>
 
   Leap.loop({
-      background: true,
-      backGroundColor: new THREE.Color(0xeeeeee)
+      background: true
+
     })
     .use('transform', {
       vr: 'desktop' // Switch to meters.
@@ -33,7 +43,8 @@
     .use('boneHand', {
       targetEl: document.body,
       //jointColor: new THREE.Color(0xffffff),
-      jointColor: new THREE.Color(0xeeeeee),
+      jointColor: new THREE.Color(0x000000),
+      boneColor: new THREE.Color(0x222222),
 
       rendererOps: {
         antialias: true
@@ -41,60 +52,103 @@
     })
     .use('proximity');
 
-
-
-
-
-
-
-
   var scene = Leap.loopController.plugins.boneHand.scene;
-
   var camera = Leap.loopController.plugins.boneHand.camera;
   var renderer = Leap.loopController.plugins.boneHand.renderer;
+
+  Leap.loop(function(frame) {
+
+    frame.hands.forEach(function(hand, index) {
+
+      if (frame.valid && frame.gestures.length > 0) {
+        frame.gestures.forEach(function(gesture) {
+
+          if (gesture.type == 'screenTap') {
+            place();
+          }
+          if (gesture.type == 'keyTap') {
+            turn90();
+          }
+          if(gesture.type == "swipe"){
+            var speed = hand.palmVelocity;
+            var state = gesture.state;
+
+            var isHorizontal = Math.abs(gesture.direction[0]) > Math.abs(gesture.direction[1]);
+            //Classify as right-left or up-down
+            if (isHorizontal) {
+              if (gesture.direction[0] > 0) {
+                swipeDirection = "Right";
+                turn180();
+
+              }
+              else {
+               swipeDirection = "Left";
+
+               //    img.src = './images/left.jpg';
+
+             }
+
+
+
+
+
+
+
+
+
+
+
+
+          }
+
+          }       
+
+        })
+
+      }
+    })
+  })
 
   camera.position.set(0, 0.3, 0.6);
 
   var controls = new THREE.OrbitControls(camera, renderer.domElement);
 
-  var axisHelper = new THREE.AxisHelper(0.2, 0 ,3);
-
+  var axisHelper = new THREE.AxisHelper(0.2, 0, 3);
 
   scene.add(axisHelper);
 
+  var planeMesh
 
-
-
+  function place() {
 
     var planeGeometry = new THREE.PlaneGeometry(0.2, 0.2);
-    var material = new THREE.MeshLambertMaterial({ color: new THREE.Color(0x99CC99),
+    var material = new THREE.MeshLambertMaterial({
+      color: new THREE.Color(0x99CC99),
       side: THREE.DoubleSide
     });
-    var planeMesh = new THREE.Mesh(planeGeometry, material);
+    planeMesh = new THREE.Mesh(planeGeometry, material);
     planeMesh.position.setX(0);
     planeMesh.position.setY(0);
     planeMesh.name = "planeMesh";
     scene.add(planeMesh);
-
     var plane = new InteractablePlane(planeMesh, Leap.loopController);
 
+  }
 
+  function turn90(){
+    planeMesh.rotation.x = Math.PI / 2;
 
+  }
 
+  function turn180(){
+    planeMesh.rotation.x = Math.PI / 3;
 
+  }
 
-    var grid = new THREE.GridHelper(100, .25);
-    grid.setColors( 0x000000,  0x000000 );
+  var grid = new THREE.GridHelper(100, .25);
+  grid.setColors(0xffffff, 0xffffff);
 
-    scene.add(grid);
-
-
-
-
-
-
-
-
+  scene.add(grid);
 </script>
 
 </html>
