@@ -2,93 +2,100 @@
 <html>
 
 <head>
-  <meta charset="utf-8">
-  <title>Hover Touch</title>
-  <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
-
-
+    <meta charset="utf-8">
+    <title>Hover Touch</title>
+    <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
 </head>
-
 
 <body bgcolor="#E6E6FA">
 
+    <p>Where its at: <span id="zone">....</span></span>
+    </p>
+    <p>Distance: <span id="distance">....</span></p>
+    <p>Device: <span id="connected"></span></span>
+    </p>
 
-  <p>Where its at: <span id="zone">....</span></span>
-  </p>
-  <p>Distance: <span id="distance">....</span></p>
+    <div>
+        <canvas id="myCanvas" width="600" height="600" style="center"></canvas>
 
-  <div>
-    <canvas id="myCanvas" width="600" height="600" style="center"></canvas>
-
-  </div>
+    </div>
 </body>
 
-
-
 <script>
-  var testColor
-  var zoneDisplay = document.getElementById("zone");
-  var canvas = document.getElementById("myCanvas")
+    var testColor
+    var zoneDisplay = document.getElementById("zone");
+    var canvas = document.getElementById("myCanvas")
 
-  var distanceDisplay = document.getElementById("distance");
+    var distanceDisplay = document.getElementById("distance");
 
+    var controller = new Leap.Controller();
 
-
-  var controller = new Leap.Controller();
-  controller.on('frame', function(frame) {
-    if (frame.pointables.length > 0) {
-      var touchZone = frame.pointables[0].touchZone;
-      console.log(touchZone)
-      zoneDisplay.innerText = touchZone;
+    controller.on('deviceConnected', function() {
+        connected.innerText = "A Leap device has been connected."
+    });
 
 
-      var dis = frame.pointables[0].touchDistance;
-      distanceDisplay.innerText = dis;
-      //  console.log(dis)
-      var pointable = frame.pointables[0];
-
-      var direction = pointable.direction;
-      console.log(direction)
-      console.log(pointable.toString());
+    controller.on('connect', function() {
+        connected.innerText = "Connected.";
+    });
 
 
-      switch (touchZone) {
-        case "none":
-          testColor = "blue";
-          break;
-        case "hovering":
-          testColor = "green";
-          break;
-        case "touching":
-          testColor = "red";
-          break;
-      }
+    controller.on('deviceDisconnected', function() {
+        connected.innerText = "Disconnected."
+    });
 
-      draw();
+    controller.on('frame', function(frame) {
+        if (frame.pointables.length > 0) {
+            var touchZone = frame.pointables[0].touchZone;
+            console.log(touchZone)
+            zoneDisplay.innerText = touchZone;
+
+            var numPoint = frame.pointables.length;
+
+            var dis = frame.pointables[0].touchDistance;
+            distanceDisplay.innerText = dis;
+
+            var pointable = frame.pointables[0];
+            console.log(pointable.toString());
+            console.log(numPoint);
+
+            switch (touchZone) {
+                case "none":
+                    testColor = "blue";
+                    break;
+                case "hovering":
+                    testColor = "green";
+                    break;
+                case "touching":
+                    testColor = "red";
+                    break;
+            }
+
+            draw();
+
+        }
+    });
+
+    function draw() {
+
+        var context = canvas.getContext('2d');
+        var centerX = canvas.width / 2;
+        var centerY = canvas.height / 2;
+        var radius = 200;
+        context.beginPath();
+        context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
+        context.fillStyle = testColor;
+        context.fill();
+        context.lineWidth = 5;
+        context.strokeStyle = '#003300';
+        context.stroke();
+        requestAnimationFrame(draw);
 
     }
-  });
 
-  function draw() {
-
-    var context = canvas.getContext('2d');
-    var centerX = canvas.width / 2;
-    var centerY = canvas.height / 2;
-    var radius = 200;
-    context.beginPath();
-    context.arc(centerX, centerY, radius, 0, 2 * Math.PI, false);
-    context.fillStyle = testColor;
-    context.fill();
-    context.lineWidth = 5;
-    context.strokeStyle = '#003300';
-    context.stroke();
-    requestAnimationFrame(draw);
-
-
-
-  }
-
-  controller.connect();
+    controller.connect();
 </script>
+
+
 
 </html>
