@@ -89,12 +89,14 @@
 
                         } // end dotProduct if
                         else {
-                           if (circle == 10) {
-                               spinA()
 
-                               circle = 0;
 
-                           } // end if
+                          //  if (circle > 10) {
+                          //      spinA()
+                           //
+                          //      circle -=1;
+                           //
+                          //  } // end if
                        } // end else
                     } // end circle if
                     if (gesture.type == "swipe") {
@@ -175,12 +177,10 @@
 
 
         var buttonPlaneGeometry = new THREE.PlaneGeometry(0.2, 0.2);
-        //var planeGeometry = new THREE.BoxGeometry(200, 200, 200);
 
         var buttonMaterial = new THREE.MeshPhongMaterial({
             color: new THREE.Color(0x99CC99),
             side: THREE.DoubleSide
-                // map: THREE.ImageUtils.loadTexture('leap_axes.png')
         });
         buttonMesh = new THREE.Mesh(buttonPlaneGeometry, buttonMaterial);
         buttonMesh.position.setX(.1);
@@ -252,10 +252,10 @@
     function up() {
 
         if (planeMesh != undefined) {
-          planeMesh.material.color.setHex(0xFF66CC);
+          planeMesh.material.color.setHex(0xFF0000);
 
 
-          planeMesh.rotation.y += Math.PI / 4;
+          planeMesh.rotation.y += Math.PI / 2;
 
         }
 

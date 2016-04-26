@@ -8,6 +8,20 @@
     <script src="js/Three.js"></script>
 
     <script src="https://js.leapmotion.com/leap-0.6.4.js"></script>
+<style>
+    #container {
+    width:1200px;
+    height:600px;
+    position:relative; /* Set as position relative to the IMG will move relative to this container */
+}
+
+#container img {
+    position:absolute;
+    top:50%; /* Move the image down, so its top is half way down the container */
+    margin-top:-100px; /* Move the image back up half its height */
+}
+
+</style>
 
 </head>
 
@@ -20,8 +34,11 @@
     <p>Velocity: <span id="outputVelocity" style="color:green;"></span></p>
     <p>Hand: <span id="outputHand" style="color:green;"></span></p>
     <div id="container">
-        <canvas id="myCanvas" width="1000" height="80" align="center"></canvas>
+        <canvas id="myCanvas" width="1000" height="80" >  </canvas>
+        <img id="img"/>
+
     </div>
+
     <p>Circle: <span id="outputCircle" style="color:green;"></span> </p>
     <p>Tap: <span id="outputTap" style="color:green;"></span></p>
     <p>Swipe: <span id="outputSwipe" style="color:blue;"></span> </p>
@@ -83,12 +100,12 @@
                                 ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                                 ctx.fillText("Circle Clockwise", 10, 50);
 
-                                //  img.src = './images/rightCircle.jpg';
+                                  img.src = './images/rightCircle.png';
                             } else {
                                 ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                                 ctx.fillText("Circle Anti-Clockwise", 10, 50);
 
-                                //  img.src = './images/leftCircle.jpg';
+                                  img.src = './images/leftCircle.png';
 
                             }
 
@@ -102,10 +119,10 @@
 
                                 ctx.fillText("Incomplete circle a-cw ", 10, 50);
 
-                                //    img.src = './images/leftCircle.png'
+                                    img.src = './images/leftCircle.png'
                             }
                             if (circleProgress < 1 && dotProduct > 0) {
-                                //    img.src = './images/rightCircle.png'
+                                    img.src = './images/rightCircle.png'
                                 ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                                 ctx.font = "30px Arial";
                                 ctx.fillText("Incomplete circle cw", 10, 50);
@@ -121,7 +138,7 @@
 
                             ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                             ctx.fillText("Key Tap", 10, 50);
-                            //  img.src = './images/down.jpg';
+                             img.src = './images/keyTap.png';
                             //console.log("Key Tap Gesture");
                             break;
 
@@ -131,7 +148,7 @@
                             outputScreenTap.innerHTML = screenTap;
                             ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                             ctx.fillText("Screen Tap", 10, 50);
-                            //    img.src = './images/screenTap.png';
+                                img.src = './images/screenTap.png';
                             //console.log("Screen Tap Gesture");
 
 
@@ -156,13 +173,13 @@
                                     swipeDirection = "Right";
                                     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                                     ctx.fillText("Swipe Right", 10, 50);
-                                    //    img.src = './images/right.jpg';
+                                        img.src = './images/right.png';
 
                                 } else {
                                     swipeDirection = "Left";
                                     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                                     ctx.fillText("Swipe Left", 10, 50);
-                                    //    img.src = './images/left.jpg';
+                                        img.src = './images/left.png';
 
                                 }
                             } else { //vertical
@@ -170,13 +187,13 @@
                                     swipeDirection = "Up";
                                     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                                     ctx.fillText("Swipe Up", 10, 50);
-                                    //      img.src = './images/up.jpg';
+                                         img.src = './images/up.png';
 
                                 } else {
                                     swipeDirection = "Down";
                                     ctx.clearRect(0, 0, myCanvas.width, myCanvas.height);
                                     ctx.fillText("Swipe Down", 10, 50);
-                                    //    img.src = './images/down.jpg';
+                                        img.src = './images/down.png';
                                 }
 
                             }
